@@ -1,0 +1,14 @@
+[package]
+name = "symphonia-decoder-libopus"
+version = "0.1.0"
+edition = "2021"
+authors = ["Karl Rikte"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+symphonia-core = "0.5.1"
+opus = "*"
+
+[dev_dependencies]
+symphonia = "0.5.1"
