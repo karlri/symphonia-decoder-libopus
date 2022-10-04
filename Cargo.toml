@@ -7,8 +7,8 @@ authors = ["Karl Rikte"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-symphonia-core = "0.5.1"
+symphonia = { version = "0.5"}
 opus = "*"
 
 [dev_dependencies]
-symphonia = "0.5.1"
+symphonia = { version = "0.5"}

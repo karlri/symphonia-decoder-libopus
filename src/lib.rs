@@ -2,7 +2,7 @@ use std::borrow::Cow;
 
 use audio::Signal;
 use opus;
-use symphonia_core::{
+use symphonia::core::{
     audio::{AudioBuffer, AudioBufferRef, SignalSpec},
     codecs::{CodecParameters, Decoder, DecoderOptions, CODEC_TYPE_OPUS},
     errors::*,
@@ -16,6 +16,7 @@ pub struct SymphoniaDecoderLibOpus {
     libopus_output_buffer: [i16; 5760 * 2], // This struct is large. BUT, inst_func mallocs it.
     decoded_buffer: AudioBuffer<i16>,
     params: CodecParameters,
+    channels: usize,
 }
 
 // It is safe for different threads to have &SymphoniaDecoderLibOpus non-mutable references concurrently.
@@ -70,6 +71,7 @@ impl Decoder for SymphoniaDecoderLibOpus {
             ),
             // Store this just to implement codec_params()
             params: params.clone(),
+            channels: params.channels.unwrap().count(),
         })
     }
 
@@ -113,7 +115,7 @@ impl Decoder for SymphoniaDecoderLibOpus {
             for plane in planes.planes() {
                 let mut s = 0;
                 for sample in plane.iter_mut() {
-                    *sample = self.libopus_output_buffer[s * 2 + ch];
+                    *sample = self.libopus_output_buffer[s * self.channels + ch];
                     s += 1;
                 }
                 ch += 1;
